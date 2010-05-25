@@ -1,0 +1,15 @@
+<html>
+<head>
+    <title>rWallpaper :: <%= yield(:title) %>
+    <%= stylesheet_link_tag "main" %>
+</head>
+<body>
+    <div id="main">
+    <h1>rWallpaper</h1>
+    <% if current_user then %>
+        <a href="/wallpapers/Computer10/<%= current_user.username %>/1024/768.png">1024x768 Wallpaper</a>
+    <% end %>
+    <%= yield %>
+    </div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+<% title "New User" %>
+
+<% if User.all.count == 0 then %>
+    <p>Its time to create your user account! This account will be the administrator account so keep its password safe.</p>
+<% end %>
+
+<%= render :partial => 'form' %>
+

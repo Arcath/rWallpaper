@@ -2,9 +2,34 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
-  helper :all # include all helpers, all the time
-  protect_from_forgery # See ActionController::RequestForgeryProtection for details
+    helper :all # include all helpers, all the time
+    protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
-  # Scrub sensitive parameters from your log
-  # filter_parameter_logging :password
+    # Scrub sensitive parameters from your log
+    filter_parameter_logging :password
+  
+    before_filter :setup
+
+    helper_method :current_user
+
+    private
+
+    def setup
+        unless params[:computer]
+            if User.all.count == 0 && controller_name != "users" then
+                redirect_to :controller => "users", :action => "new"
+            elsif !(current_user) && controller_name != "user_sessions" then
+                redirect_to :controller => "user_sessions", :action => "new" unless controller_name == "users"
+            end
+        end
+    end
+
+    def current_user_session
+        return @current_user_session if defined?(@current_user_session)
+        @current_user_session = UserSession.find
+    end
+
+    def current_user
+         @current_user = current_user_session && current_user_session.record
+    end
 end
