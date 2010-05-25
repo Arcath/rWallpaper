@@ -1,3 +1,5 @@
 = rWallpaper
 
-...
+== About
+
+rWallpaper is a RubyOnRails app that generates .png wallpapers based on your settings and the username and computer name passed in the URL.
