@@ -1,0 +1,24 @@
+<% title "Settings" %>
+
+<% form_tag update_all_settings_path, :method => :put do %>
+    <% for setting in @settings %>
+        <% fields_for "settings[]", setting do |f| %>
+            <b><%= setting.name %></b><br />
+            <%= setting.description %><br />
+            <% if setting.datatype == "bool" then %>
+                <%= f.check_box :value, {}, "true", "false" %><br />
+            <% elsif setting.datatype == "choice" then %>
+                <select name="settings[<%= setting.id %>][value]">
+                    <% setting.values.each do |value| %>
+                        <% selected = ""
+                        selected = " SELECTED" if setting.selected == value %>
+                        <%= "<option value=\"#{setting.choice_value(value)}\"#{selected}>#{value}</option>" %>
+                    <% end %>
+                </select><br />
+            <% else %>
+                <%= f.text_field :value %><br />
+            <% end %>
+        <% end %>
+    <% end %>
+    <%= submit_tag "Save" %>
+<% end %>

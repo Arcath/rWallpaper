@@ -4,8 +4,18 @@ class WallpapersController < ApplicationController
 
         wallpaper.rescale
 
-        wallpaper.text(params[:computer])
-        wallpaper.text(params[:user]) 
+        #Text Variables        
+        if Setting.find_by_key("ps").value == "true" then
+            computer="Computer: #{params[:computer]}"
+            user="Username: #{params[:user]}"
+        else
+            computer=params[:computer]
+            user=params[:user]
+        end
+        #Write the Text
+        wallpaper.text(Setting.find_by_key("n").value,"White",36)
+        wallpaper.text(computer)
+        wallpaper.text(user) 
 
         send_data(wallpaper.to_user, :disposition => 'inline', :type => 'image/png')
     end
