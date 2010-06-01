@@ -2,13 +2,23 @@ class Wallpaper
     require 'rubygems'
     require 'RMagick'
     def initialize(w,h)
-        @wallpaper=Magick::Image.read("#{RAILS_ROOT}/public/images/rails.png").first
         @width=w
         @height=h
         @strings=[]
         @from_top=26
     end
     
+    def full_image
+        @wallpaper=Magick::Image.read("#{RAILS_ROOT}/public/images/rails.png").first
+    end    
+
+    def central_image(bgc)
+        smallimage=Magick::Image.read("#{RAILS_ROOT}/public/images/rails.png").first
+        bg=Magick::Image.new(@width,@height).color_floodfill(5,5,background_color(bgc,smallimage))
+        @wallpaper = bg.composite(smallimage, Magick::CenterGravity, Magick::OverCompositeOp)
+        @wallpaper.format = "png"
+    end
+
     def rescale
         @wallpaper=@wallpaper.scale(@width, @height)
     end
@@ -48,4 +58,19 @@ class Wallpaper
             @from_top+=(string[2]-2)
             r
     end
+
+    def background_color(bgc,smallimage)
+        if bgc != "calculate" then
+            return bgc
+        elsif bgc == "calculate" then 
+            return generated_bg_color(smallimage)
+        else #Just to stop invalid input from breaking it
+            return "#FFFFFF"
+        end
+    end
+
+    def generated_bg_color(smallimage)
+        smallimage.pixel_color(0,0)
+    end
+
 end

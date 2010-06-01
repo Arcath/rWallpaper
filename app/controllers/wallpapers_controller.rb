@@ -2,7 +2,13 @@ class WallpapersController < ApplicationController
     def index
         wallpaper=Wallpaper.new(params[:width].to_i,params[:height].to_i)
 
-        wallpaper.rescale
+        #What type of Image?      
+        if Setting.find_by_key("l").selected == "Full Size Image" then
+            wallpaper.full_image
+            wallpaper.rescale
+        elsif Setting.find_by_key("l").selected == "Centered Image" then
+            wallpaper.central_image(Setting.find_by_key("bgc").value)
+        end
 
         #Text Variables        
         if Setting.find_by_key("ps").value == "true" then
