@@ -1,19 +1,20 @@
 class Wallpaper
     require 'rubygems'
     require 'RMagick'
-    def initialize(w,h)
+    def initialize(w,h,img)
         @width=w
         @height=h
         @strings=[]
         @from_top=26
+        @img=img
     end
     
     def full_image
-        @wallpaper=Magick::Image.read("#{RAILS_ROOT}/public/images/rails.png").first
+        @wallpaper=Magick::Image.read("#{RAILS_ROOT}/public/images/#{@img}").first
     end    
 
     def central_image(bgc)
-        smallimage=Magick::Image.read("#{RAILS_ROOT}/public/images/rails.png").first
+        smallimage=Magick::Image.read("#{RAILS_ROOT}/public/images/#{@img}").first
         bg=Magick::Image.new(@width,@height).color_floodfill(5,5,background_color(bgc,smallimage))
         @wallpaper = bg.composite(smallimage, Magick::CenterGravity, Magick::OverCompositeOp)
         @wallpaper.format = "png"

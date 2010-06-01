@@ -1,6 +1,6 @@
 class WallpapersController < ApplicationController
     def index
-        wallpaper=Wallpaper.new(params[:width].to_i,params[:height].to_i)
+        wallpaper=Wallpaper.new(params[:width].to_i,params[:height].to_i,Setting.find_by_key("img").value)
 
         #What type of Image?      
         if Setting.find_by_key("l").selected == "Full Size Image" then
