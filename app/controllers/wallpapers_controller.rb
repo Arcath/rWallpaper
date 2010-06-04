@@ -19,9 +19,13 @@ class WallpapersController < ApplicationController
             user=params[:user]
         end
         #Write the Text
-        wallpaper.text(Setting.find_by_key("n").value,Setting.find_by_key("fc").value,36)
+        wallpaper.heading(Setting.find_by_key("n").value,Setting.find_by_key("fc").value,36)
         wallpaper.text(computer,Setting.find_by_key("fc").value)
         wallpaper.text(user,Setting.find_by_key("fc").value) 
+
+        #Messages
+        wallpaper.move_down(20)
+        Message.to_show.map { |message| wallpaper.message(message) }
 
         send_data(wallpaper.to_user, :disposition => 'inline', :type => 'image/png')
     end

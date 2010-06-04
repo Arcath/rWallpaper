@@ -1,3 +1,6 @@
 class Message < ActiveRecord::Base
-  attr_accessible :title, :body, :startdate, :enddate
+    def self.to_show
+        t=Time.now
+        Message.find(:all, :conditions => ["startdate <= ? AND enddate >= ?",t,t])
+    end
 end
