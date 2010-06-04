@@ -1,5 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   map.wallpapers "/wallpapers/:computer/:user/:width/:height.:format", :controller => "wallpapers"
+  map.scripts "/scripts/:action.:format", :controller => "scripts"
   map.resources :user_sessions
   map.resources :users
   map.resources :messages

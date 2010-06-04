@@ -13,13 +13,14 @@ class WallpapersController < ApplicationController
         #Text Variables        
         if Setting.find_by_key("ps").value == "true" then
             computer="Computer: #{params[:computer]}"
-            user="Username: #{params[:user]}"
+            user="Username: #{params[:user].gsub("&dot;",".")}"
         else
             computer=params[:computer]
             user=params[:user]
         end
         #Write the Text
         wallpaper.heading(Setting.find_by_key("n").value,Setting.find_by_key("fc").value,36)
+        wallpaper.text(Time.now.strftime(Setting.find_by_key("ts").value),Setting.find_by_key("fc").value)
         wallpaper.text(computer,Setting.find_by_key("fc").value)
         wallpaper.text(user,Setting.find_by_key("fc").value) 
 
