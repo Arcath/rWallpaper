@@ -1,24 +1,35 @@
 class Wallpaper
     require 'rubygems'
     require 'RMagick'
-    def initialize(w,h,img)
+    def initialize(w,h,img,format)
         @width=w
         @height=h
         @strings=[]
         @headings=[]
         @from_top=30
         @img=img
+        @format=format.upcase
     end
     
     def full_image
         @wallpaper=Magick::Image.read("#{RAILS_ROOT}/public/images/#{@img}").first
+        @wallpaper.format = @format
     end    
 
     def central_image(bgc)
         smallimage=Magick::Image.read("#{RAILS_ROOT}/public/images/#{@img}").first
         bg=Magick::Image.new(@width,@height).color_floodfill(5,5,background_color(bgc,smallimage))
         @wallpaper = bg.composite(smallimage, Magick::CenterGravity, Magick::OverCompositeOp)
-        @wallpaper.format = "png"
+        @wallpaper.format = @format
+    end
+
+    def near_top_image(bgc)
+        smallimage=Magick::Image.read("#{RAILS_ROOT}/public/images/#{@img}").first
+        biggerimage=Magick::Image.new(smallimage.columns,smallimage.rows+100).color_floodfill(5,5,background_color(bgc,smallimage))
+        tocopy=biggerimage.composite(smallimage, Magick::SouthGravity, Magick::OverCompositeOp)
+        bg=Magick::Image.new(@width,@height).color_floodfill(5,5,background_color(bgc,smallimage))
+        @wallpaper = bg.composite(tocopy, Magick::NorthGravity, Magick::OverCompositeOp)
+        @wallpaper.format = @format
     end
 
     def rescale
