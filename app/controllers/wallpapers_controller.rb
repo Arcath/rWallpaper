@@ -50,7 +50,6 @@ class WallpapersController < ApplicationController
         end
         #Write the Text
         wallpaper.heading(Setting.find_by_key("n").value,Setting.find_by_key("fc").value,36)
-        wallpaper.text(Time.now.strftime(Setting.find_by_key("ts").value),Setting.find_by_key("fc").value)
         wallpaper.text(computer,Setting.find_by_key("fc").value)
 
         send_data(wallpaper.to_user, :disposition => 'inline', :type => "image/#{params[:format]}")

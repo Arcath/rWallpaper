@@ -1,0 +1,85 @@
+'rWallpaper VBS Script
+' Written by Adam "Arcath" Laycock
+' June 2010
+' Generate by rWallpaper <%= Time.now %>
+
+'Objects and variables
+screen = ScreenResolution
+Set WshNetwork = WScript.CreateObject("WScript.Network")
+Set objFS=CreateObject("Scripting.FileSystemObject")
+Set objShell=WScript.CreateObject("WScript.Shell")
+osbuild=objShell.regread("HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\CurrentBuildNumber")
+dim xHttp: Set xHttp = createobject("Microsoft.XMLHTTP")
+dim bStrm: Set bStrm = createobject("Adodb.Stream")
+
+'Functions
+'Screen Resolution
+Function ScreenResolution()
+    Set oIE = CreateObject("InternetExplorer.Application")
+    With oIE
+        .Navigate("about:blank")
+    Do Until .readyState = 4: wscript.sleep 100: Loop
+        width = .document.ParentWindow.screen.width
+        height = .document.ParentWindow.screen.height
+    End With
+    oIE.Quit
+    ScreenResolution = array(width,height)
+End Function
+
+
+'Create the rWallpaper Folder if it doesnt exist
+if objFS.FolderExists("C:\rWallpaper") Then
+    'Folder Exists Do Nothing
+else
+    'Create the Folder
+    objFS.CreateFolder("C:\rWallpaper")
+end if
+
+
+Select Case osbuild
+	case "2600"
+		'if XP
+
+		'Set the URL
+		url = "<%= Setting.find_by_key("ru").value %>lgbg/" & WshNetwork.ComputerName & "/" & screen(0) & "/" & screen(1) & ".bmp"
+
+		'Download the Wallpaper
+		xHttp.Open "GET", url, False
+		xHttp.Send
+
+		with bStrm
+		    .type = 1 '//binary
+		    .open
+		    .write xHttp.responseBody
+		    .savetofile "c:\rWallpaper\lgbg.bmp", 2 '//overwrite
+		end with
+    
+        objShell.RegWrite "HKEY_USERS\.DEFAULT\Control Panel\Desktop\wallpaper", "c:\rWallpaper\lgbg.bmp"
+
+	case "7600"
+		'if 7
+
+		objShell.RegWrite "HKLM\Software\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\Background\OEMBackground",1,"REG_DWORD"
+
+		'Set the URL
+		url = "<%= Setting.find_by_key("ru").value %>lgbg/" & WshNetwork.ComputerName & "/" & screen(0) & "/" & screen(1) & ".jpg"
+		
+		'create the folder
+		if objFS.FolderExists("C:\Windows\System32\oobe\info\backgrounds") Then
+			'Folder Exists Do Nothing
+		else
+			'Create the Folder
+			objFS.CreateFolder("C:\Windows\System32\oobe\info\backgrounds")
+		end if
+
+		'Download the Wallpaper
+		xHttp.Open "GET", url, False
+		xHttp.Send
+
+		with bStrm
+		    .type = 1 '//binary
+		    .open
+		    .write xHttp.responseBody
+		    .savetofile "C:\Windows\System32\oobe\info\backgrounds\backgrounddefault.jpg", 2 '//overwrite
+		end with
+End Select
