@@ -7,7 +7,7 @@
     <div id="main">
     <h1>rWallpaper</h1>
     <% if current_user then %>
-        <a href="/wallpapers/Computer10/<%= current_user.username %>/1024/768.png">1024x768 Wallpaper</a> - <%= link_to "Messages", messages_path %> - <%= link_to "Settings", settings_path %> - <%= link_to "Login.vbs", "/scripts/login.vbs" %> - <%= link_to "Startup.vbs", "/scripts/startup.vbs" %>
+        <a href="/wallpapers/Computer10/<%= current_user.username.gsub(/\./,"&dot;") %>/1024/768.jpg">1024x768 Wallpaper</a> - <%= link_to "Messages", messages_path %> - <%= link_to "Settings", settings_path %> - <%= link_to "Login.vbs", "/scripts/login.vbs" %> - <%= link_to "Startup.vbs", "/scripts/startup.vbs" %>
     <% end %>
     <%= yield %>
     </div>
