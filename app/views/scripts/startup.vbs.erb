@@ -69,6 +69,7 @@ Select Case osbuild
 			'Folder Exists Do Nothing
 		else
 			'Create the Folder
+			objFS.CreateFolder("C:\Windows\System32\oobe\info")
 			objFS.CreateFolder("C:\Windows\System32\oobe\info\backgrounds")
 		end if
 
