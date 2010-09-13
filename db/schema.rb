@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100525130939) do
+ActiveRecord::Schema.define(:version => 20100913140438) do
 
   create_table "messages", :force => true do |t|
     t.string   "title"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(:version => 20100525130939) do
     t.datetime "enddate"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "persistent"
   end
 
   create_table "settings", :force => true do |t|

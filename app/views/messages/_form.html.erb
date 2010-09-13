@@ -16,5 +16,9 @@
     <%= f.label :enddate %><br />
     <%= f.datetime_select :enddate %>
   </p>
+  <p>
+    <%= f.label :persistent, "Always Display Message?" %><br />
+    <%= f.check_box :persistent %>
+  </p> 
   <p><%= f.submit %></p>
 <% end %>
